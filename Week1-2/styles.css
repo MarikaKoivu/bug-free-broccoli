@@ -17,3 +17,28 @@ button {
     border: none;
     cursor: pointer;
 }
+
+nav a.active {
+    text-decoration: underline;color: yellow;
+}
+
+@keyframes slide {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+h1 {
+    animation: slide 1s ease-out;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+
