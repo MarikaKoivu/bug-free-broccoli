@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Single Page Navigation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+        }
+
+        nav {
+            background-color: #333;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            margin: 0 10px;
+            text-decoration: none;
+        }
+
+        section {
+            padding: 2rem;
+            border-bottom: 1px solid #ddd;
+        }
+
+        #message {
+            margin-top: 1rem;
+            font-size: 1.2rem;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="#section1">Section 1</a>
+        <a href="#section2">Section 2</a>
+        <a href="#section3">Section 3</a>
+    </nav>
+
+    <section id="section1">
+        <h2>Section 1</h2>
+        <p>Content for Section 1.</p>
+        <!-- Button to trigger the JavaScript function -->
+        <button onclick="displayMessage()">Click Me</button>
+        <!-- Placeholder for the message -->
+        <p id="message"></p>
+    </section>
+
+    <section id="section2">
+        <h2>Section 2</h2>
+        <p>Content for Section 2.</p>
+    </section>
+
+    <section id="section3">
+        <h2>Section 3</h2>
+        <p>Content for Section 3.</p>
+    </section>
+
+    <script>
+        // JavaScript function to display a message
+        function displayMessage() {
+            document.getElementById("message").innerText = "Hello, this is a message!";
+        }
+    </script>
+</body>
+</html>
