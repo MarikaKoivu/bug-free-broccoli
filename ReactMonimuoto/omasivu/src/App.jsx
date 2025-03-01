@@ -1,3 +1,5 @@
+import Header from "./components/Header.jsx";
+
 const Footer = () => {
   return (
       <footer>
@@ -9,6 +11,7 @@ const Footer = () => {
 const App = () => {
   return (
       <div>
+          <Header />
           <Footer />
       </div>
   );
