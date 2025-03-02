@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD Operations</title>
+</head>
+
+<body>
+    <h1>CRUD Operations</h1>
+
+    <!-- Create User -->
+    <h2>Luo käyttäjä</h2>
+    <form id="createUserForm">
+        <label for="createName">Nimi:</label>
+        <input type="text" id="createName" required>
+        <label for="createEmail">Sähköposti:</label>
+        <input type="email" id="createEmail" required>
+        <button type="submit">Luo</button>
+    </form>
+
+    <!-- Read Users -->
+    <h2>Hae käyttäjät</h2>
+    <ul id="userList"></ul>
+
+    <!-- Update User -->
+    <h2>Päivitä käyttäjä</h2>
+    <form id="updateUserForm">
+        <label for="updateUserId">ID:</label>
+        <input type="number" id="updateUserId" required>
+        <label for="updateName">Nimi:</label>
+        <input type="text" id="updateName" required>
+        <label for="updateEmail">Sähköposti:</label>
+        <input type="email" id="updateEmail" required>
+        <button type="submit">Päivitä</button>
+    </form>
+
+    <!-- Delete User -->
+    <h2>Poista käyttäjä</h2>
+    <form id="deleteUserForm">
+        <label for="deleteUserId">Käyttäjän ID:</label>
+        <input type="number" id="deleteUserId" required>
+        <button type="submit">Poista</button>
+    </form>
+
+    <script>
+        const apiUrl = 'http://localhost:3000/users';
+
+        // Create User
+        document.getElementById('createUserForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('createName').value;
+            const email = document.getElementById('createEmail').value;
+
+            await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email })
+            });
+
+            document.getElementById('createUserForm').reset();
+            loadUsers();
+        });
+
+        // Read Users
+        async function loadUsers() {
+            const response = await fetch(apiUrl);
+            const users = await response.json();
+            const userList = document.getElementById('userList');
+            userList.innerHTML = '';
+            users.forEach(user => {
+                const li = document.createElement('li');
+                li.textContent = `${user.id}: ${user.name} (${user.email})`;
+                li.addEventListener('click', () => {
+                    document.getElementById('updateUserId').value = user.id;
+                    document.getElementById('updateName').value = user.name;
+                    document.getElementById('updateEmail').value = user.email;
+                    document.getElementById('deleteUserId').value = user.id;
+                });
+                userList.appendChild(li);
+            });
+        }
+
+        // Update User
+        document.getElementById('updateUserForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('updateUserId').value;
+            const name = document.getElementById('updateName').value;
+            const email = document.getElementById('updateEmail').value;
+
+            await fetch(`${apiUrl}/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email })
+            });
+
+            document.getElementById('updateUserForm').reset();
+            loadUsers();
+        });
+
+        // Delete User
+        document.getElementById('deleteUserForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('deleteUserId').value;
+
+            await fetch(`${apiUrl}/${id}`, { method: 'DELETE' });
+
+            document.getElementById('deleteUserForm').reset();
+            loadUsers();
+        });
+
+        loadUsers();
+    </script>
+</body>
+
+</html>
