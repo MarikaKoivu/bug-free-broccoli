@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD-käyttöliittymä</title>
+    <script>
+        async function fetchUsers() {
+            const response = await fetch('/users');
+            const users = await response.json();
+            const userList = document.getElementById('userList');
+            userList.innerHTML = '';
+            users.forEach(user => {
+                userList.innerHTML += `<li>${user.name} (${user.email}, ${user.age})
+                    <button onclick="deleteUser(${user.id})">Poista</button>
+                    <button onclick="populateForm(${user.id}, '${user.name}', '${user.email}', ${user.age})">Muokkaa</button>
+                </li>`;
+            });
+        }
+
+        async function createUser() {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const age = document.getElementById('age').value;
+            await fetch('/users', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email, age: Number(age) })
+            });
+            fetchUsers();
+        }
+
+        async function updateUser() {
+            const id = document.getElementById('userId').value;
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const age = document.getElementById('age').value;
+            await fetch(`/users/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email, age: Number(age) })
+            });
+            fetchUsers();
+        }
+
+        async function deleteUser(id) {
+            await fetch(`/users/${id}`, { method: 'DELETE' });
+            fetchUsers();
+        }
+
+        function populateForm(id, name, email, age) {
+            document.getElementById('userId').value = id;
+            document.getElementById('name').value = name;
+            document.getElementById('email').value = email;
+            document.getElementById('age').value = age;
+        }
+
+        window.onload = fetchUsers;
+    </script>
+</head>
+
+<body>
+    <h1>CRUD-käyttöliittymä</h1>
+    <input type="hidden" id="userId">
+    <input type="text" id="name" placeholder="Nimi">
+    <input type="email" id="email" placeholder="Sähköposti">
+    <input type="number" id="age" placeholder="Ikä">
+    <button onclick="createUser()">Luo</button>
+    <button onclick="updateUser()">Päivitä</button>
+    <ul id="userList"></ul>
+</body>
+
+</html>
