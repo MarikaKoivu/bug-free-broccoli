@@ -6,7 +6,6 @@ const appAddress = 'http://localhost:5173';
 // Generate random user data
 const name = (Math.random() + 1).toString(36).substring(7);
 const email = `${name}@${(Math.random() + 1).toString(36).substring(7)}.io`;
-
     /**
  * Test Case: Adds a new user
  * - Opens the app
